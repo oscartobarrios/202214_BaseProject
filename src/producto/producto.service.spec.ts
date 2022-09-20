@@ -64,10 +64,10 @@ describe('ProductoService', () => {
     );
   });
 
-  it('create should return a new tienda', async () => {
+  it('create should return a new product', async () => {
     const miproducto: ProductoEntity = await repository.save({
       nombre: 'hola',
-      tipo: 'ojo',
+      tipo: 'Perecedero',
       precio: faker.datatype.number(1000),
       tiendas: [],
     });
@@ -85,17 +85,18 @@ describe('ProductoService', () => {
   });
 
   it('update should modify a product', async () => {
-    const mitienda: ProductoEntity = productosList[0];
-    mitienda.nombre = 'New name';
-    mitienda.precio = 52000;
-    const updated: ProductoEntity = await service.update(mitienda.id, mitienda);
+    const dato: ProductoEntity = productosList[0];
+    dato.nombre = 'New name';
+    dato.tipo = 'Perecedero';
+    dato.precio = 52000;
+    const updated: ProductoEntity = await service.update(dato.id, dato);
     expect(updated).not.toBeNull();
     const stored: ProductoEntity = await repository.findOne({
-      where: { id: mitienda.id },
+      where: { id: dato.id },
     });
     expect(stored).not.toBeNull();
-    expect(stored.nombre).toEqual(mitienda.nombre);
-    expect(stored.precio).toEqual(mitienda.precio);
+    expect(stored.nombre).toEqual(dato.nombre);
+    expect(stored.precio).toEqual(dato.precio);
   });
 
   it('update should throw an exception for an invalid product', async () => {
@@ -103,11 +104,21 @@ describe('ProductoService', () => {
     dato = {
       ...dato,
       nombre: 'New name',
-      tipo: 'New type',
+      tipo: 'Perecedero',
     };
     await expect(() => service.update('0', dato)).rejects.toHaveProperty(
       'message',
       'Producto no encontrado',
+    );
+  });
+
+  it('update should throw an exception for an invalid type product', async () => {
+    const dato: ProductoEntity = productosList[1];
+    dato.nombre = 'New name';
+    dato.tipo = 'xxxx';
+    await expect(() => service.update(dato.id, dato)).rejects.toHaveProperty(
+      'message',
+      'Tipo invalido',
     );
   });
 

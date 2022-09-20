@@ -31,6 +31,11 @@ export class ProductoService {
   }
 
   async create(dato: ProductoEntity): Promise<ProductoEntity> {
+    if (!(dato.tipo == 'Perecedero' || dato.tipo == 'No Perecedero'))
+      throw new BusinessLogicException(
+        'Tipo invalido',
+        BusinessError.PRECONDITION_FAILED,
+      );
     return await this.productoRepository.save(dato);
   }
 
@@ -42,6 +47,11 @@ export class ProductoService {
       throw new BusinessLogicException(
         'Producto no encontrado',
         BusinessError.NOT_FOUND,
+      );
+    if (!(dato.tipo == 'Perecedero' || dato.tipo == 'No Perecedero'))
+      throw new BusinessLogicException(
+        'Tipo invalido',
+        BusinessError.PRECONDITION_FAILED,
       );
     dato.id = id;
     return await this.productoRepository.save({ ...persisted, ...dato });

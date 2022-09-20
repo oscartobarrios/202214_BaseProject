@@ -65,7 +65,7 @@ describe('TiendaService', () => {
   it('create should return a new tienda', async () => {
     const mitienda: TiendaEntity = await repository.save({
       nombre: faker.company.name(),
-      ciudad: faker.address.cityName(),
+      ciudad: 'BOG',
       direccion: faker.address.direction(),
       productos: [],
     });
@@ -86,6 +86,7 @@ describe('TiendaService', () => {
     const mitienda: TiendaEntity = tiendaList[0];
     mitienda.nombre = 'New name';
     mitienda.direccion = 'New address';
+    mitienda.ciudad = 'ZZZ';
     const updated: TiendaEntity = await service.update(mitienda.id, mitienda);
     expect(updated).not.toBeNull();
     const stored: TiendaEntity = await repository.findOne({
@@ -95,6 +96,20 @@ describe('TiendaService', () => {
     expect(stored.nombre).toEqual(mitienda.nombre);
     expect(stored.direccion).toEqual(mitienda.direccion);
   });
+
+  it('update should modify a tienda invalid city', async () => {
+    const mitienda: TiendaEntity = tiendaList[0];
+    mitienda.nombre = 'New name';
+    mitienda.direccion = 'New address';
+    mitienda.ciudad = 'a';
+    await expect(() =>
+      service.update(mitienda.id, mitienda),
+    ).rejects.toHaveProperty(
+      'message',
+      'La ciudad solo debe tener 3 Caracteres en Mayuscula',
+    );
+  });
+
   it('update should throw an exception for an invalid tienda', async () => {
     let dato: TiendaEntity = tiendaList[0];
     dato = {
@@ -107,7 +122,6 @@ describe('TiendaService', () => {
       'Tienda no encontrada',
     );
   });
-
   it('delete should remove a tienda', async () => {
     const dato: TiendaEntity = tiendaList[0];
     await service.delete(dato.id);
@@ -117,7 +131,7 @@ describe('TiendaService', () => {
     expect(deleted).toBeNull();
   });
 
-  it('delete should throw an exception for an invalid museum', async () => {
+  it('delete should throw an exception for an invalid tienda', async () => {
     const dato: TiendaEntity = tiendaList[0];
     await service.delete(dato.id);
     await expect(() => service.delete('0')).rejects.toHaveProperty(
