@@ -81,4 +81,48 @@ describe('TiendaService', () => {
     expect(dato.ciudad).toEqual(stored.ciudad);
     expect(dato.direccion).toEqual(stored.direccion);
   });
+
+  it('update should modify a tienda', async () => {
+    const mitienda: TiendaEntity = tiendaList[0];
+    mitienda.nombre = 'New name';
+    mitienda.direccion = 'New address';
+    const updated: TiendaEntity = await service.update(mitienda.id, mitienda);
+    expect(updated).not.toBeNull();
+    const stored: TiendaEntity = await repository.findOne({
+      where: { id: mitienda.id },
+    });
+    expect(stored).not.toBeNull();
+    expect(stored.nombre).toEqual(mitienda.nombre);
+    expect(stored.direccion).toEqual(mitienda.direccion);
+  });
+  it('update should throw an exception for an invalid tienda', async () => {
+    let dato: TiendaEntity = tiendaList[0];
+    dato = {
+      ...dato,
+      nombre: 'New name',
+      direccion: 'New type',
+    };
+    await expect(() => service.update('0', dato)).rejects.toHaveProperty(
+      'message',
+      'Tienda no encontrada',
+    );
+  });
+
+  it('delete should remove a tienda', async () => {
+    const dato: TiendaEntity = tiendaList[0];
+    await service.delete(dato.id);
+    const deleted: TiendaEntity = await repository.findOne({
+      where: { id: dato.id },
+    });
+    expect(deleted).toBeNull();
+  });
+
+  it('delete should throw an exception for an invalid museum', async () => {
+    const dato: TiendaEntity = tiendaList[0];
+    await service.delete(dato.id);
+    await expect(() => service.delete('0')).rejects.toHaveProperty(
+      'message',
+      'Tienda no encontrada',
+    );
+  });
 });
