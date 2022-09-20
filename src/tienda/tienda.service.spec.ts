@@ -28,22 +28,57 @@ describe('TiendaService', () => {
     repository.clear();
     tiendaList = [];
     for (let i = 0; i < 5; i++) {
-      const producto: TiendaEntity = await repository.save({
+      const tienda: TiendaEntity = await repository.save({
         nombre: faker.company.name(),
         ciudad: faker.address.cityName(),
         direccion: faker.address.direction(),
         productos: [],
       });
-      tiendaList.push(producto);
+      tiendaList.push(tienda);
     }
   };
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  it('findAll should return all museums', async () => {
+  it('findAll should return all TIENDAS', async () => {
     const datos: TiendaEntity[] = await service.findAll();
     expect(datos).not.toBeNull();
     expect(datos).toHaveLength(tiendaList.length);
+  });
+  it('findOne should return a TIENDA by id', async () => {
+    const stored: TiendaEntity = tiendaList[0];
+    const dato: TiendaEntity = await service.findOne(stored.id);
+    expect(dato).not.toBeNull();
+    expect(dato.nombre).toEqual(stored.nombre);
+    expect(dato.ciudad).toEqual(stored.ciudad);
+    expect(dato.direccion).toEqual(stored.direccion);
+  });
+
+  it('findOne should throw an exception for an invalid tienda', async () => {
+    await expect(() => service.findOne('0')).rejects.toHaveProperty(
+      'message',
+      'Tienda no encontrada',
+    );
+  });
+
+  it('create should return a new tienda', async () => {
+    const mitienda: TiendaEntity = await repository.save({
+      nombre: faker.company.name(),
+      ciudad: faker.address.cityName(),
+      direccion: faker.address.direction(),
+      productos: [],
+    });
+
+    const nueva: TiendaEntity = await service.create(mitienda);
+    expect(nueva).not.toBeNull();
+    const stored: TiendaEntity = await repository.findOne({
+      where: { id: nueva.id },
+    });
+    const dato: TiendaEntity = await service.findOne(stored.id);
+    expect(dato).not.toBeNull();
+    expect(dato.nombre).toEqual(stored.nombre);
+    expect(dato.ciudad).toEqual(stored.ciudad);
+    expect(dato.direccion).toEqual(stored.direccion);
   });
 });
