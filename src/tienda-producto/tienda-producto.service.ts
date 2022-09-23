@@ -19,12 +19,13 @@ export class TiendaProductoService {
   ) {}
 
   async addStoreToProduct(
-    tiendaId: string,
     productoId: string,
+    tiendaId: string,
   ): Promise<ProductoEntity> {
     const producto: ProductoEntity = await this.productoRepository.findOne({
       where: { id: productoId },
     });
+    console.log(producto);
     if (!producto)
       throw new BusinessLogicException(
         'The product with the given id was not found',
@@ -56,12 +57,6 @@ export class TiendaProductoService {
         BusinessError.NOT_FOUND,
       );
 
-    if (!producto.tiendas)
-      throw new BusinessLogicException(
-        'The tienda with the given id was not found',
-        BusinessError.NOT_FOUND,
-      );
-
     return producto.tiendas;
   }
 
@@ -72,12 +67,6 @@ export class TiendaProductoService {
     if (!producto)
       throw new BusinessLogicException(
         'The producto with the given id was not found',
-        BusinessError.NOT_FOUND,
-      );
-
-    if (!producto.tiendas)
-      throw new BusinessLogicException(
-        'The tienda with the given id was not found',
         BusinessError.NOT_FOUND,
       );
 
@@ -112,7 +101,7 @@ export class TiendaProductoService {
     return prod;
   }
 
-  async deleteStoresFromProduct(tiendaId: string, productoId: string) {
+  async deleteStoresFromProduct(productoId: string, tiendaId: string) {
     const producto: ProductoEntity = await this.productoRepository.findOne({
       where: { id: productoId },
     });

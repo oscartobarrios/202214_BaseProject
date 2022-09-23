@@ -1,0 +1,241 @@
+{
+	"info": {
+		"_postman_id": "5404c99d-4296-4555-8fb8-0198dfe64d2e",
+		"name": "Asociacion",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7253046"
+	},
+	"item": [
+		{
+			"name": "agregar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/4789b94e-3324-4bf7-b360-20a64ec7f3ba/stores/8d5f1944-fdf6-4a45-926e-2af5a96f9bd7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"4789b94e-3324-4bf7-b360-20a64ec7f3ba",
+						"stores",
+						"8d5f1944-fdf6-4a45-926e-2af5a96f9bd7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "asociar-tienda-inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"   pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get expected error message\", function () {\r",
+							"   var data = pm.response.json();\r",
+							"   pm.expect(data.message).to.eql(\"The store with the given id was not found\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/4789b94e-3324-4bf7-b360-20a64ec7f3ba/stores/8d5f1944-fdf6-4a45-926e-2af5a96f9bd8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"4789b94e-3324-4bf7-b360-20a64ec7f3ba",
+						"stores",
+						"8d5f1944-fdf6-4a45-926e-2af5a96f9bd8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findStoresFromProduct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/e5a70949-8ed5-4ad6-831c-a6de559d5be7/stores",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"e5a70949-8ed5-4ad6-831c-a6de559d5be7",
+						"stores"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findStoreFromProduct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/e5a70949-8ed5-4ad6-831c-a6de559d5be7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"e5a70949-8ed5-4ad6-831c-a6de559d5be7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateStoresFromProduct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\":\"Mi tienda 22\",\r\n    \"ciudad\":\"BTA\",\r\n    \"direccion\":\"calle 16 No 45-98\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/e5a70949-8ed5-4ad6-831c-a6de559d5be7/stores/17645984-ee42-4ea2-801c-9879f74cbd5a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"e5a70949-8ed5-4ad6-831c-a6de559d5be7",
+						"stores",
+						"17645984-ee42-4ea2-801c-9879f74cbd5a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteStoresFromProduct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"   pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/products/e5a70949-8ed5-4ad6-831c-a6de559d5be7/stores/17645984-ee42-4ea2-801c-9879f74cbd5a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"products",
+						"e5a70949-8ed5-4ad6-831c-a6de559d5be7",
+						"stores",
+						"17645984-ee42-4ea2-801c-9879f74cbd5a"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

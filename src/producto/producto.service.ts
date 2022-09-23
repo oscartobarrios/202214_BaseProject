@@ -42,7 +42,6 @@ export class ProductoService {
     const persisted: ProductoEntity = await this.productoRepository.findOne({
       where: { id },
     });
-    console.log(persisted);
     if (!persisted)
       throw new BusinessLogicException(
         'Producto no encontrado',

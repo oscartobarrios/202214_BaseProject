@@ -7,36 +7,36 @@ import { TiendaProductoService } from '../tienda-producto/tienda-producto.servic
 import { TiendaEntity } from '../tienda/tienda.entity';
 import { TiendaDto } from '../tienda/tienda.dto';
 
-@Controller('tienda-producto')
+@Controller('products')
 @UseInterceptors(BusinessErrorsInterceptor)
 export class TiendaProductoController {
     constructor(private readonly tiendaProductoService: TiendaProductoService) {}
 
-    @Post('products/:productoId/stores/:tiendaId')
-    async addStoreToProduct(@Param('tiendaId') tiendaId: string, @Param('productoId') productoId: string) {
-      return await this.tiendaProductoService.addStoreToProduct(tiendaId,productoId);
+    @Post(':productoId/stores/:tiendaId')
+    async addStoreToProduct(@Param('productoId') productoId: string, @Param('tiendaId') tiendaId: string) {
+      return await this.tiendaProductoService.addStoreToProduct(productoId,tiendaId);
     }
   
-    @Get('products/:productoId/stores/:tiendaId')
-    async findStoresFromProduct( @Param('tiendaId') tiendaId: string, @Param('productoId') productoId: string) {
+    @Get(':productoId/stores')
+    async findStoresFromProduct( @Param('productoId') productoId: string) {
       return await this.tiendaProductoService.findStoresFromProduct(productoId);
     }
   
-    @Get('products/:productoId')
+    @Get(':productoId')
     async findStoreFromProduct(@Param('productoId') productoId: string) {
       return await this.tiendaProductoService.findStoreFromProduct(productoId);
     }
   
   
-    @Put('products/:productoId/stores/:tiendaId')
+    @Put(':productoId/stores/:tiendaId')
     async updateStoresFromProduct(@Param('productoId') productoId: string, @Body() tiendaDto: TiendaDto) {
       const tienda: TiendaEntity = plainToInstance(TiendaEntity, tiendaDto);
       return await this.tiendaProductoService.updateStoresFromProduct(productoId, tienda);
     }
   
-    @Delete('products/:productoId/stores/:tiendaId')
+    @Delete(':productoId/stores/:tiendaId')
     @HttpCode(204)
-    async deleteStoresFromProduct(@Param('tiendaId') tiendaId: string, @Param('productoId') productoId: string) {
-      return await this.tiendaProductoService.deleteStoresFromProduct(tiendaId,productoId);
+    async deleteStoresFromProduct(@Param('productoId') productoId: string, @Param('tiendaId') tiendaId: string) {
+      return await this.tiendaProductoService.deleteStoresFromProduct(productoId,tiendaId);
     }
 }
