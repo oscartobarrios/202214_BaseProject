@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsUrl } from 'class-validator';
 import { TiendaEntity } from '../tienda/tienda.entity';
 export class ProductoDto {
   @IsString()
@@ -9,15 +9,9 @@ export class ProductoDto {
   @IsNotEmpty()
   readonly tipo: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   readonly precio: number;
 
-  @IsString()
-  @IsNotEmpty()
-  readonly id: string;
-
-  @IsUrl()
-  @IsNotEmpty()
   readonly tiendas: TiendaEntity[];
 }

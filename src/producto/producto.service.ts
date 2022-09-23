@@ -26,7 +26,6 @@ export class ProductoService {
         'Producto no encontrado',
         BusinessError.NOT_FOUND,
       );
-
     return dato;
   }
 
@@ -43,6 +42,7 @@ export class ProductoService {
     const persisted: ProductoEntity = await this.productoRepository.findOne({
       where: { id },
     });
+    console.log(persisted);
     if (!persisted)
       throw new BusinessLogicException(
         'Producto no encontrado',
